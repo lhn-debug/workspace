@@ -5,34 +5,27 @@
 using namespace std;
 
 char buf[1024] = {};
-const char * msg = "write successful\n";
+const char * msg = "myfile2\n";
 
 void write_file()
 {
-	FILE * fp = fopen("myfile", "w");
-	if(!fp)
-	{	
-		cout<<"Error"<<endl;
+	FILE * fp = fopen("myfile2", "w");
+	if(fp)
+	{
+		fputs(msg, fp);
+		fclose(fp);
 	}
-	fwrite(msg, strlen(msg), 1, fp);
-	fclose(fp);
 }
 
 void read_file()
 {
-	FILE * fp = fopen("myfile", "r");
-	if(!fp)
+	FILE * fp = fopen("myfile2", "r");
+	if(fp)
 	{
-		cout<<"Error"<<endl;
+		fgets(buf, 5, fp);
+		fclose(fp);
 	}
-	while(feof(fp) == 0)
-	{
-		if(fread(buf, 1, strlen(msg), fp) > 0)
-		{
-			cout<<buf;
-		}
-	}
-	fclose(fp);
+	cout<<buf<<endl;
 }
 
 int main()
