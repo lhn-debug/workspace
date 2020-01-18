@@ -171,17 +171,177 @@ public:
 		return _str[index];
 	}
 
-	bool operator<(const String& s);
-	bool operator<=(const String& s);
-	bool operator>(const String& s);
-	bool operator>=(const String& s);
-	bool operator==(const String& s);
-	bool operator!=(const String& s);
-	size_t Find(char c, size_t pos = 0) const;
-	size_t Find(const char * s, size_t pos = 0) const;
-	String& Insert(size_t pos, char c);
-	String& Insert(size_t pos, const char * str);
-	String& Erase(size_t pos, size_t len);
+	bool operator<(const String& s)
+	{
+		if((*this) == s)
+		{
+			return false;
+		}
+		for(int i = 0; i < _size; ++i)
+		{
+			if(_str[i] < s._str[i])
+			{
+				return true;
+			}
+			else if(_str[i] > s._str[i])
+			{
+				return false;
+			}
+		}
+		if(_size < s._size)
+		{
+			return true;
+		}
+	}
+
+	bool operator<=(const String& s)
+	{
+		if(((*this) < s) || ((*this) == s))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	bool operator>(const String& s)
+	{
+		if((*this) == s)
+		{
+			return false;
+		}
+		for(int i = 0; i < _size; ++i)
+		{
+			if(_str[i] > s._str[i])
+			{
+				return true;
+			}
+			else if(_str[i] < s._str[i])
+			{
+				return false;
+			}
+		}
+		if(_size < s._size)
+		{
+			return false;
+		}
+	}
+
+	bool operator>=(const String& s)
+	{
+		if(((*this) > s) || ((*this) == s))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	bool operator==(const String& s)
+	{
+		if(s._size != _size)
+		{
+			return false;
+		}
+		for(int i = 0; i < _size; ++i)
+		{
+			if(s[i] != _str[i])
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	bool operator!=(const String& s)
+	{
+		if(s._size != _size)
+		{
+			return true;
+		}
+		for(int i = 0; i < _size; ++i)
+		{
+			if(s[i] != _str[i])
+			{
+				return true;
+			}
+		}
+		return false;
+		/*
+		if((*this) == s)
+		{
+			return false;
+		}
+		return true;
+		*/
+	}
+
+	size_t Find(char c, size_t pos = 0) const
+	{
+		for(int i = pos; i < _size; ++i)
+		{
+			if(c == _str[i])
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	size_t Find(const char * s, size_t pos = 0) const
+	{
+		for(int i = pos; i < _size; ++i)
+		{
+			int j = 0;
+			for(j = 0; j < strlen(s); ++j)
+			{
+				if(s[j] != _str[i + j])
+				{
+					break;
+				}
+			}
+			if(j == strlen(s))
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	String& Insert(size_t pos, char c)
+	{
+		if(_size == _capacity)
+		{
+			Reserve(_capacity * 2);
+		}
+		_str[_size + 1] = '\0';
+		for(int i = _size - 1; i >= pos; --i)
+		{
+			_str[i + 1] = _str[i];
+		}
+		_str[pos] = c;
+		_size++;
+		return *this;
+	}
+
+	String& Insert(size_t pos, const char * str)
+	{
+		for(int i = 0; i < strlen(str); ++i)
+		{
+			Insert(pos + i, str[i]);
+		}
+		return *this;
+	}
+
+	String& Erase(size_t pos, size_t len)
+	{
+		int index = pos;
+		for(int i = pos + len; i < _size; ++i)
+		{
+			_str[pos++] = _str[i];
+		}
+		_str[pos] = '\0';
+		_size -= len;
+		return *this;
+	}
 
 private:
 	friend ostream& operator<<(ostream& _cout, const String& s);
@@ -194,7 +354,7 @@ private:
 
 ostream& operator<<(ostream& _cout, const String& s)
 {
-	_cout<<s._str<<" "<<s._size<<" "<<s._capacity<<endl;
+	_cout<<s._str<<" "<<s._size<<" "<<s._capacity;
 	return _cout;
 }
 
@@ -228,5 +388,17 @@ int main()
 	s2.Resize(20);
 	cout<<s2<<endl;
 	cout<<s2[2]<<endl;
+	String s3("hello");
+	String s4("linux");
+	cout<<"s3==s4:"<<(s3==s4)<<endl;
+	cout<<"s3!=s4:"<<(s3!=s4)<<endl;
+	cout<<"s3<s4:"<<(s3<s4)<<endl;
+	cout<<"s3<=s4:"<<(s3<=s4)<<endl;
+	cout<<s4<<endl;
+	cout<<s4.Find("nux")<<endl;
+	s4.Insert(2, " hello code ");
+	cout<<s4<<endl;
+	s4.Erase(2, 12);
+	cout<<s4<<endl;
 	return 0;
 }
