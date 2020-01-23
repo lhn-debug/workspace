@@ -1,5 +1,5 @@
 .PHONY:all
-all:gouzaoList iteratorList modifyList question test_deque
+all:gouzaoList iteratorList modifyList question test_deque myList
 
 gouzaoList:gouzaoList.cpp
 	g++-4.8 -std=c++11 -o $@ $^
@@ -16,6 +16,9 @@ question:question.cpp
 test_deque:test_deque.cpp
 	g++-4.8 -std=c++11 -o $@ $^
 
+myList:myList.cpp
+	g++-4.8 -std=c++11 -o $@ $^
+
 .PHONY:clean
 clean:
-	rm -rf gouzaoList iteratorList modifyList question test_deque
+	rm -rf gouzaoList iteratorList modifyList question test_deque myList
