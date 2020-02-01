@@ -53,8 +53,8 @@ protected:
 
 int main()
 {
-	Student s("yx", 22, 1111);
-	Teacher t("lhn", 22, 2222);
+	Student s("a", 22, 1111);
+	Teacher t("b", 24, 2222);
 	s.Print();
 	t.Print();
 	return 0;
