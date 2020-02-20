@@ -16,16 +16,7 @@ public:
 	{
 		pool.poolInit();
 	}
-/*
-	static void* _thread_entry(void *arg)
-	{
-		thread_arg *p = reinterpret_cast<thread_arg *>(arg);
-		_process_connect(p);
-		p->new_sock._close();
-		delete p;
-		return nullptr;
-	}
-*/
+
 	static bool _thread_entry(thread_arg *data)
 	{
 		thread_arg *p = data;
@@ -66,11 +57,6 @@ public:
 				continue;
 			}
 			printf("[client %s:%d] connect...\n", arg->ip.c_str(), arg->port);
-/*
-			pthread_t tid;
-			pthread_create(&tid, nullptr, _thread_entry, arg);
-			pthread_detach(tid);
-*/
 			ThreadTask * tt = new ThreadTask(arg, _thread_entry);
 			pool.pushTask(tt);
 		}
