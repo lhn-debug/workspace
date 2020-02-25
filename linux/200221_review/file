@@ -1,0 +1,37 @@
+总用量 4280
+drwxr-xr-x 24 lhn lhn    4096 2月  21 20:30 ./
+drwxrwxr-x  7 lhn lhn    4096 2月  19 09:39 ../
+drwxr-xr-x  2 lhn lhn    4096 12月 26 15:39 191224/
+-rw-r--r--  1 lhn lhn 2139827 12月 26 15:37 191224.tar.gz
+-rw-r--r--  1 lhn lhn 2140890 12月 26 15:37 191224.zip
+drwxrwxr-x  2 lhn lhn    4096 12月 27 18:30 191227/
+drwxrwxr-x  2 lhn lhn    4096 12月 28 16:44 191228/
+drwxrwxr-x  2 lhn lhn    4096 12月 29 15:17 191229/
+drwxrwxr-x  2 lhn lhn    4096 1月   9 11:40 200108/
+drwxrwxr-x  2 lhn lhn    4096 1月   9 13:09 200109/
+drwxrwxr-x  3 lhn lhn    4096 1月  10 16:20 200110/
+drwxrwxr-x  2 lhn lhn    4096 1月  11 21:10 200111/
+drwxrwxr-x  2 lhn lhn    4096 1月  12 18:38 200112/
+drwxrwxr-x  2 lhn lhn    4096 1月  13 18:29 200113/
+drwxrwxr-x  2 lhn lhn    4096 1月  14 14:28 200114/
+drwxrwxr-x  6 lhn lhn    4096 1月  16 20:52 200116/
+drwxrwxr-x  2 lhn lhn    4096 1月  18 21:16 200118/
+drwxrwxr-x  2 lhn lhn    4096 2月   6 13:54 200205_thread/
+drwxrwxr-x  2 lhn lhn    4096 2月   6 18:15 200206_thread_mutex/
+drwxrwxr-x  2 lhn lhn    4096 2月   7 16:41 200207_thread_cond/
+drwxrwxr-x  2 lhn lhn    4096 2月  19 13:05 200208_thread_pool/
+drwxrwxr-x  2 lhn lhn    4096 2月  13 12:10 200210_socket_other/
+drwxrwxr-x  4 lhn lhn    4096 2月  12 17:09 200211_UDP_socket/
+drwxrwxr-x  4 lhn lhn    4096 2月  13 12:10 200212_TCP_socket/
+drwxrwxr-x  2 lhn lhn    4096 2月  13 20:13 200213_HTTP/
+drwxrwxr-x  2 lhn lhn    4096 2月  21 20:31 200221_review/
+2020年 02月 21日 星期五 20:33:31 CST
+      二月 2020         
+日 一 二 三 四 五 六  
+                   1  
+ 2  3  4  5  6  7  8  
+ 9 10 11 12 13 14 15  
+16 17 18 19 20 _2_1 22  
+23 24 25 26 27 28 29  
+                      
+ 20:33:52 up  8:02,  1 user,  load average: 0.28, 0.43, 0.48
