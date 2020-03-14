@@ -4,6 +4,7 @@
 #include<cstring>
 #include<cstdlib>
 #include<memory>
+#include<algorithm>
 
 #include<string>
 #include<vector>
