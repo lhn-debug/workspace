@@ -498,7 +498,7 @@ bool my_fs::format_file_system() {
     Inode etc_node(sp.get_new_inode(), false, 0, sp.get_new_sec());
     Inode home_node(sp.get_new_inode(), false, 0, sp.get_new_sec());
     Inode dev_node(sp.get_new_inode(), false, 0, sp.get_new_sec());
-    Inode tangrui_node(sp.get_new_inode(), false, 0, sp.get_new_sec());
+    Inode lhn_node(sp.get_new_inode(), false, 0, sp.get_new_sec());
     cout << "1. 申请inode" << endl;
     /*
     *   3. 将inode写回到磁盘中
@@ -508,7 +508,7 @@ bool my_fs::format_file_system() {
     etc_node.write_inode_back_to_disk(my_cache);
     home_node.write_inode_back_to_disk(my_cache);
     dev_node.write_inode_back_to_disk(my_cache);
-    tangrui_node.write_inode_back_to_disk(my_cache);
+    lhn_node.write_inode_back_to_disk(my_cache);
     cout << "2. inode写回磁盘" << endl;
     /*
     *   4. 建立数据扇区中的目录结构
@@ -532,15 +532,15 @@ bool my_fs::format_file_system() {
     sector_dir home_sec_dir;
     home_sec_dir.dirs[0].init(".", home_node.get_inode_num());
     home_sec_dir.dirs[1].init("..", root_node.get_inode_num());
-    home_sec_dir.dirs[2].init("tangrui", tangrui_node.get_inode_num());
+    home_sec_dir.dirs[2].init("lhn", lhn_node.get_inode_num());
 
     sector_dir dev_sec_dir;
     dev_sec_dir.dirs[0].init(".",  dev_node.get_inode_num());
     dev_sec_dir.dirs[1].init("..", root_node.get_inode_num());
 
-    sector_dir tangrui_sec_dir;
-    tangrui_sec_dir.dirs[0].init(".",  tangrui_node.get_inode_num());
-    tangrui_sec_dir.dirs[1].init("..", home_node.get_inode_num());
+    sector_dir lhn_sec_dir;
+    lhn_sec_dir.dirs[0].init(".",  lhn_node.get_inode_num());
+    lhn_sec_dir.dirs[1].init("..", home_node.get_inode_num());
 
     cout << "3. 目录创建完成" << endl;
     /*
@@ -551,7 +551,7 @@ bool my_fs::format_file_system() {
     etc_sec_dir.write_back_to_disk(my_cache, etc_node.get_sec_beg());
     home_sec_dir.write_back_to_disk(my_cache, home_node.get_sec_beg());
     dev_sec_dir.write_back_to_disk(my_cache, dev_node.get_sec_beg());
-    tangrui_sec_dir.write_back_to_disk(my_cache, tangrui_node.get_sec_beg());
+    lhn_sec_dir.write_back_to_disk(my_cache, lhn_node.get_sec_beg());
     cout << "4.目录创建完成" << endl;
     /*
     *  6. 修改系统当前目录位置为根目录

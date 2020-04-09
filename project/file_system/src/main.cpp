@@ -1,9 +1,16 @@
-#include"../control/FileSystem.hpp"
+/*
+ * main.cpp
+ */
 
-using namespace std;
+#include"../include/control.hpp"
 
 int main()
 {
-	cout<<"File System!"<<endl;
+/*
+	file_system *fs = new file_system;
+	fs->run();
+	delete fs;
+	fs = NULL;
+*/
 	return 0;
 }
