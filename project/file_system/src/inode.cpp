@@ -21,7 +21,7 @@ Inode::Inode(int node_num, bool is_file, int file_size, int sec_begin)
 	_file_size = file_size;
 	_sec_beg = sec_begin;
 	_sec_num = file_size / 508 + 1;
-	cout<<"创建新的i节点，i-node号："<<node_num<<"，开始扇区："<<sec_begin<<endl;
+	cout<<"create new I-node，I-node number："<<node_num<<"，begin sector："<<sec_begin<<endl;
 }
 	
 int Inode::get_inode_num()
@@ -82,7 +82,7 @@ bool Inode::write_inode_back_to_disk(Buffer& buffer)
 	BufferNode buffer_node;
 	buffer.read_disk(sec_num, buffer_node);
 	memcpy(buffer_node.buffer + num_in_sec * sizeof(Inode), this, sizeof(Inode));
-	cout<<"将i-node写回磁盘，i-node号："<<_inode_num<<"，扇区号："<<sec_num<<endl;
+	cout<<"write I-node back to disk，I-node number："<<_inode_num<<"，sector number："<<sec_num<<endl;
 	buffer.write_disk(buffer_node);
 
 	return true;
