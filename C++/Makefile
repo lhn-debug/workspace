@@ -1,7 +1,10 @@
 .PHONY:all
-all:main
+all:myclass.o main
 
-main:main.cpp
+myclass.o:myclass.cpp
+	g++-4.8 -std=c++11 -w -c -o myclass.o myclass.cpp
+
+main:myclass.o main.cpp
 	g++-4.8 -std=c++11 -o $@ $^
 
 .PHONY:clean

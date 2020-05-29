@@ -4,6 +4,7 @@
 #include "FileManager.h"
 #include <string>
 #include <unordered_map>
+#include <map>
 using namespace std;
 
 class User {
@@ -76,11 +77,13 @@ public:
 	unordered_multimap<string, string> dir_hash_map;
 	unordered_multimap<string, string> file_hash_map;
 
-//	unordered_multimap<string, string> fs_hash_map;
+	multimap<string, string> fs_hash_map;
 public:
     User();
     ~User();
 
+	void deal(const string& str, const bool is_file);
+	void Exit();
     void Ls();
     void Cd(string dirName);
     void Mkdir(string dirName);

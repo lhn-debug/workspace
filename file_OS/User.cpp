@@ -6,6 +6,27 @@ using namespace std;
 
 extern FileManager g_FileManager;
 
+void User::deal(const string& str, const bool is_file)
+{
+	string name, path;
+	size_t pos = str.rfind('/');
+	name = str.substr(pos + 1, str.size());
+	path = str.substr(0, pos + 1);
+	if(pos == 0)
+	{
+		path = "/";
+	}
+	fs_hash_map.insert(make_pair(path, name));
+	if(is_file)
+	{
+		file_hash_map.insert(make_pair(name, path));
+	}
+	else
+	{
+		dir_hash_map.insert(make_pair(name, path));
+	}
+}
+
 User::User() {
     u_error = U_NOERROR;
     fileManager = &g_FileManager;
@@ -15,12 +36,51 @@ User::User() {
 	cdir = fileManager->rootDirINode;
     pdir = NULL;
     Utility::memset(arg, 0, sizeof(arg));
+
+	string tmp;
+
+	ifstream fifs("file_bak");
+	while(fifs>>tmp)
+	{
+		deal(tmp, true);
+	}
+
+	ifstream difs("dir_bak");
+	while(difs>>tmp)
+	{
+		deal(tmp, false);
+	}
+
+	fifs.close();
+	difs.close();
+
 	printf("User finished!\n");
 }
 
 User::~User() {
 }
 
+void User::Exit(){
+	ofstream fofs("file_bak");
+	ofstream dofs("dir_bak");
+	
+	for(auto it = file_hash_map.begin(); it != file_hash_map.end(); ++it)
+	{
+		string tmp = it->second + it->first;
+		fofs<<tmp<<endl;
+	}
+
+	for(auto it = dir_hash_map.begin(); it != dir_hash_map.end(); ++it)
+	{
+		string tmp = it->second + it->first;
+		dofs<<tmp<<endl;
+	}
+
+	fofs.close();
+	dofs.close();
+
+	exit(0);
+}
 
 void User::Mkdir(string dirName) {
     if (!checkPathName(dirName)) {
@@ -31,7 +91,7 @@ void User::Mkdir(string dirName) {
     if(!IsError())
 	{
 		dir_hash_map.insert(make_pair(dirName, curDirPath));
-		//fs_hash_map.insert(make_pair(curDirPath, dirName));
+		fs_hash_map.insert(make_pair(curDirPath, dirName));
 	}
 }
 
@@ -42,19 +102,19 @@ void User::Ls() {
         return;
     }
     cout << ls << endl;
-/*
+
 	auto it = fs_hash_map.find(curDirPath);
 	for(int k = 0; k != fs_hash_map.count(curDirPath); k++, it++)
 	{
-		cout<<it->first<<" "<<it->second<<endl;
+		cout<<"[curDirPath]"<<it->first<<" => "<<it->second<<endl;
 	}
-*/
-/*	
+
+	cout<<endl;
+
 	for(auto it = fs_hash_map.begin(); it != fs_hash_map.end(); it++)
 	{		
-		cout<<it->first<<" "<<it->second<<endl;
+		cout<<"[allDirPath]"<<it->first<<" => "<<it->second<<endl;
 	}
-*/
 }
 
 void User::Cd(string dirName) {
@@ -80,7 +140,7 @@ void User::Create(string fileName, string mode) {
     if(!IsError())
 	{
 		file_hash_map.insert(make_pair(fileName, curDirPath));
-//		fs_hash_map.insert(make_pair(curDirPath, fileName));
+		fs_hash_map.insert(make_pair(curDirPath, fileName));
 	}
 }
 
@@ -91,6 +151,7 @@ void User::Delete(string fileName) {
     fileManager->UnLink();
     if(!IsError())
 	{
+		/*删除文件哈希容器中当前目录下的文件*/
 		auto fit = file_hash_map.find(fileName);
 		for(int k = 0; k != file_hash_map.count(fileName); k++, fit++)
 		{
@@ -100,32 +161,76 @@ void User::Delete(string fileName) {
 				break;
 			}
 		}
+
+		/*删除系统容器中要删除的直接目录*/
+		auto fs_it = fs_hash_map.find(curDirPath);
+		for(int k = 0; k != fs_hash_map.count(curDirPath); k++, fs_it++)
+		{
+			if(fileName == fs_it->second)
+			{
+				fs_hash_map.erase(fs_it);
+				break;
+			}
+		}
+		
+		/*删除系统容器中要删除的间接目录下的目录*/
+		for(auto it = fs_hash_map.begin(); it != fs_hash_map.end(); )
+		{
+			if((it->first).substr(0, strlen((curDirPath + fileName + "/").c_str())) == (curDirPath + fileName + "/"))
+			{
+				it = fs_hash_map.erase(it);
+			}
+			else
+			{
+				it++;
+			}
+		}
+		
+		/*删除目录哈希容器中当前目录下的目录*/
+		for(auto dir_it = dir_hash_map.begin(); dir_it != dir_hash_map.end(); )
+		{
+			if((curDirPath == dir_it->second && fileName == dir_it->first)
+						|| ((dir_it->second).substr(0, strlen((curDirPath + fileName + "/").c_str())) == (curDirPath + fileName + "/")))
+			{
+				dir_it = dir_hash_map.erase(dir_it);
+			}
+			else
+			{
+				dir_it++;
+			}
+		}
+		
+		/*删除文件哈希容器中当前目录下的文件*/
+		for(auto dir_it = file_hash_map.begin(); dir_it != file_hash_map.end(); )
+		{
+			if((curDirPath == dir_it->second && fileName == dir_it->first)
+						|| ((dir_it->second).substr(0, strlen((curDirPath + fileName + "/").c_str())) == (curDirPath + fileName + "/")))
+			{
+				dir_it = file_hash_map.erase(dir_it);
+			}
+			else
+			{
+				dir_it++;
+			}
+		}
+/*
+		for(auto it = tmp.begin(); it != tmp.end(); it++)
+		{
+			cout<<*it<<endl;
+		}
+*/
 /*
 		auto dit = dir_hash_map.find(fileName);
-		for(int k = 0; k != dir_hash_map.count(fileName); k++, dit++)
+		for(int k = 0; k != dir_hash_map.count(fileName); k++)
 		{
-			if(curDirPath == dit->second)
+			if((dit->second).substr(0, strlen((curDirPath + fileName + "/").c_str())) == (curDirPath + fileName + "/") || (fileName == dit->second))
 			{
-				
+				dit = dir_hash_map.erase(dit);
 			}
-		}
-
-		auto fs_it = fs_hash_map.find(curDirPath + fileName);
-		if((fs_it == fs_hash_map.end()) && 
-					(fs_it = fs_hash_map.find(curDirPath)) != fs_hash_map.end())
-		{
-			for(int m = 0; m != fs_hash_map.count(curDirPath); m++, fs_it++)
+			else
 			{
-				if(fileName == fs_it->second)
-				{
-					fs_hash_map.erase(fs_it);
-					break;
-				}
+				dit++;
 			}
-		}
-		else
-		{
-			
 		}
 */
 	}

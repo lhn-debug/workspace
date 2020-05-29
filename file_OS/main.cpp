@@ -37,7 +37,7 @@ void man(string command) {
         "                 seek         :  移动读写指针 \n"
         "                 write        :  写入文件 \n"
         "                 read         :  读取文件 \n"
-        "                 at|autoTest  :  自动测试 \n"
+        //"                 at|autoTest  :  自动测试 \n"
         "Usage Demo    :  man mkdir \n"
         ;
 
@@ -311,10 +311,17 @@ int main() {
             g_INodeTable.Format();
             g_BufferManager.FormatBuffer();
             g_FileSystem.FormatDevice();
+			ofstream fofs("file_bak");
+			fofs<<"";
+			fofs.close();
+			ofstream dofs("dir_bak");
+			dofs<<"";
+			dofs.close();
             exit(0);
         }
         else if (cmd == "exit") {
-            exit(0);
+			user->Exit();
+			//exit(0);
         }
         else if (cmd == "at" || cmd == "autoTest") {
             autoFlag = 1;
